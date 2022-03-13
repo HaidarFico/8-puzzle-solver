@@ -1,12 +1,13 @@
 import argparse
 import timeit
-import resource
 from collections import deque
 from state import State
 from heapq import heappush, heappop, heapify
 import itertools
 
-goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+goal_state = [1, 2, 3, 4, 0, 5, 7, 8, 6]
+# [0, 1, 2, 3, 4, 5, 6, 7, 8]
+# [1, 5, 2, 7, 4, 3, 8, 6, 0] INITIAL STATE
 goal_node = State
 initial_state = list()
 board_len = 0
@@ -18,67 +19,6 @@ max_frontier_size = 0
 
 moves = list()
 costs = set()
-
-
-def bfs(start_state):
-
-    global max_frontier_size, goal_node, max_search_depth
-
-    explored, queue = set(), deque([State(start_state, None, None, 0, 0, 0)])
-
-    while queue:
-
-        node = queue.popleft()
-
-        explored.add(node.map)
-
-        if node.state == goal_state:
-            goal_node = node
-            return queue
-
-        neighbors = expand(node)
-
-        for neighbor in neighbors:
-            if neighbor.map not in explored:
-                queue.append(neighbor)
-                explored.add(neighbor.map)
-
-                if neighbor.depth > max_search_depth:
-                    max_search_depth += 1
-
-        if len(queue) > max_frontier_size:
-            max_frontier_size = len(queue)
-
-
-def dfs(start_state):
-
-    global max_frontier_size, goal_node, max_search_depth
-
-    explored, stack = set(), list([State(start_state, None, None, 0, 0, 0)])
-
-    while stack:
-
-        node = stack.pop()
-
-        explored.add(node.map)
-
-        if node.state == goal_state:
-            goal_node = node
-            return stack
-
-        neighbors = reversed(expand(node))
-
-        for neighbor in neighbors:
-            if neighbor.map not in explored:
-                stack.append(neighbor)
-                explored.add(neighbor.map)
-
-                if neighbor.depth > max_search_depth:
-                    max_search_depth += 1
-
-        if len(stack) > max_frontier_size:
-            max_frontier_size = len(stack)
-
 
 def ast(start_state):
 
@@ -303,17 +243,15 @@ def export(frontier, time):
 
     moves = backtrace()
 
-    file = open('output.txt', 'w')
-    file.write("path_to_goal: " + str(moves))
-    file.write("\ncost_of_path: " + str(len(moves)))
-    file.write("\nnodes_expanded: " + str(nodes_expanded))
-    file.write("\nfringe_size: " + str(len(frontier)))
-    file.write("\nmax_fringe_size: " + str(max_frontier_size))
-    file.write("\nsearch_depth: " + str(goal_node.depth))
-    file.write("\nmax_search_depth: " + str(max_search_depth))
-    file.write("\nrunning_time: " + format(time, '.8f'))
-    file.write("\nmax_ram_usage: " + format(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1000.0, '.8f'))    
-    file.close()
+    print("path_to_goal: " + str(moves))
+    print("\ncost_of_path: " + str(len(moves)))
+    print("\nnodes_expanded: " + str(nodes_expanded))
+    # print("\nfringe_size: " + str(len(frontier)))
+    # print("\nmax_fringe_size: " + str(max_frontier_size))
+    # print("\nsearch_depth: " + str(goal_node.depth))
+    # print("\nmax_search_depth: " + str(max_search_depth))
+    # print("\nrunning_time: " + format(time, '.8f'))
+
 
 
 def read(configuration):
@@ -352,8 +290,6 @@ def main():
 
 
 function_map = {
-    'bfs': bfs,
-    'dfs': dfs,
     'ast': ast,
     'ida': ida
 }
