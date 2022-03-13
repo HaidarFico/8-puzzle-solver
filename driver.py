@@ -8,7 +8,6 @@ goal_state = [1, 2, 3, 4, 0, 5, 7, 8, 6]
 goal_node = State
 board_len = 9
 board_side = 3
-
 nodes_expanded = 0
 max_search_depth = 0
 max_frontier_size = 0
@@ -207,9 +206,11 @@ def move(state, position):
 
 
 def h(state):
-
-    return sum(abs(b % board_side - g % board_side) + abs(b//board_side - g//board_side)
-               for b, g in ((state.index(i), goal_state.index(i)) for i in range(1, board_len)))
+    count = 0;
+    for i in range(0,8):
+        if state.index(i) != goal_state.index(i):
+            count = count + 1
+    return count
 
 
 def backtrace():
@@ -233,7 +234,7 @@ def backtrace():
     return moves
 
 
-def export(frontier):
+def printResult():
 
     global moves
 
@@ -249,15 +250,15 @@ def main():
 
     print("A* Algorithm")
 
-    result = ast(initial_state)
+    ast(initial_state)
 
-    export(result)
+    printResult()
 
-    print("\nIDA* Algorithm")
+    # print("\nIDA* Algorithm")
 
-    result = ida(initial_state)
-
-    export(result)
+    # ida(initial_state)
+    
+    # printResult()
 
 
 
