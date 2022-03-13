@@ -1,7 +1,5 @@
 from heapq import heappush, heappop, heapify
 from state import State
-from collections import deque
-import itertools
 
 initial_state = [7, 4, 2, 3, 1, 5, 0, 8, 6]
 goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
@@ -19,8 +17,9 @@ def ast(start_state):
 
     global max_frontier_size, goal_node, max_search_depth
 
-    explored, heap, heap_entry, counter = set(), list(), {}, itertools.count()
-
+    explored = set()
+    heap = list()
+    heapEntry = {}
     key = h(start_state)
 
     root = State(start_state, None, None, 0, 0, key)
@@ -29,7 +28,7 @@ def ast(start_state):
 
     heappush(heap, entry)
 
-    heap_entry[root.map] = entry
+    heapEntry[root.map] = entry
 
     while heap:
 
@@ -55,20 +54,20 @@ def ast(start_state):
 
                 explored.add(neighbor.map)
 
-                heap_entry[neighbor.map] = entry
+                heapEntry[neighbor.map] = entry
 
                 if neighbor.depth > max_search_depth:
                     max_search_depth += 1
 
-            elif neighbor.map in heap_entry and neighbor.key < heap_entry[neighbor.map][2].key:
+            elif neighbor.map in heapEntry and neighbor.key < heapEntry[neighbor.map][2].key:
 
-                hindex = heap.index((heap_entry[neighbor.map][2].key,
-                                     heap_entry[neighbor.map][2].move,
-                                     heap_entry[neighbor.map][2]))
+                hindex = heap.index((heapEntry[neighbor.map][2].key,
+                                     heapEntry[neighbor.map][2].move,
+                                     heapEntry[neighbor.map][2]))
 
                 heap[int(hindex)] = entry
 
-                heap_entry[neighbor.map] = entry
+                heapEntry[neighbor.map] = entry
 
                 heapify(heap)
 
