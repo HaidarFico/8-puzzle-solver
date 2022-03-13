@@ -238,13 +238,13 @@ def backtrace():
 
 def printResult():
 
-    global moves
-
+    global moves, nodes_expanded
     moves = backtrace()
 
     print("Path to goal: " + str(moves))
     print("\nCost of path: " + str(len(moves)))
     print("\nNumber of nodes expanded: " + str(nodes_expanded))
+    nodes_expanded = 0
 
 
 
