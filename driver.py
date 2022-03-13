@@ -3,8 +3,8 @@ from state import State
 from collections import deque
 import itertools
 
-initial_state = [1, 5, 2, 7, 4, 3, 8, 6, 0]
-goal_state = [1, 2, 3, 4, 0, 5, 7, 8, 6]
+initial_state = [7, 4, 2, 3, 1, 5, 0, 8, 6]
+goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
 goal_node = State
 board_len = 9
 board_side = 3
@@ -215,6 +215,8 @@ def h(state):
 
 def backtrace():
 
+    moves.clear()
+
     current_node = goal_node
 
     while initial_state != current_node.state:
@@ -240,9 +242,9 @@ def printResult():
 
     moves = backtrace()
 
-    print("path_to_goal: " + str(moves))
-    print("\ncost_of_path: " + str(len(moves)))
-    print("\nnodes_expanded: " + str(nodes_expanded))
+    print("Path to goal: " + str(moves))
+    print("\nCost of path: " + str(len(moves)))
+    print("\nNumber of nodes expanded: " + str(nodes_expanded))
 
 
 
@@ -254,11 +256,11 @@ def main():
 
     printResult()
 
-    # print("\nIDA* Algorithm")
+    print("\nIDA* Algorithm")
 
-    # ida(initial_state)
+    ida(initial_state)
     
-    # printResult()
+    printResult()
 
 
 
