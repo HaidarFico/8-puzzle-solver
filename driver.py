@@ -1,17 +1,13 @@
-import argparse
-import timeit
-from collections import deque
-from state import State
 from heapq import heappush, heappop, heapify
+from state import State
+from collections import deque
 import itertools
 
+initial_state = [1, 5, 2, 7, 4, 3, 8, 6, 0]
 goal_state = [1, 2, 3, 4, 0, 5, 7, 8, 6]
-# [0, 1, 2, 3, 4, 5, 6, 7, 8]
-# [1, 5, 2, 7, 4, 3, 8, 6, 0] INITIAL STATE
 goal_node = State
-initial_state = list()
-board_len = 0
-board_side = 0
+board_len = 9
+board_side = 3
 
 nodes_expanded = 0
 max_search_depth = 0
@@ -237,7 +233,7 @@ def backtrace():
     return moves
 
 
-def export(frontier, time):
+def export(frontier):
 
     global moves
 
@@ -246,53 +242,26 @@ def export(frontier, time):
     print("path_to_goal: " + str(moves))
     print("\ncost_of_path: " + str(len(moves)))
     print("\nnodes_expanded: " + str(nodes_expanded))
-    # print("\nfringe_size: " + str(len(frontier)))
-    # print("\nmax_fringe_size: " + str(max_frontier_size))
-    # print("\nsearch_depth: " + str(goal_node.depth))
-    # print("\nmax_search_depth: " + str(max_search_depth))
-    # print("\nrunning_time: " + format(time, '.8f'))
 
 
 
-def read(configuration):
+def main(): 
 
-    global board_len, board_side
+    print("A* Algorithm")
 
-    data = configuration.split(",")
+    result = ast(initial_state)
 
-    for element in data:
-        initial_state.append(int(element))
+    export(result)
 
-    board_len = len(initial_state)
+    print("\nIDA* Algorithm")
 
-    board_side = int(board_len ** 0.5)
+    result = ida(initial_state)
 
-
-def main():
-
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('algorithm')
-    parser.add_argument('board')
-    args = parser.parse_args()
-
-    read(args.board)
-
-    function = function_map[args.algorithm]
-
-    start = timeit.default_timer()
-
-    frontier = function(initial_state)
-
-    stop = timeit.default_timer()
-
-    export(frontier, stop-start)
+    export(result)
 
 
-function_map = {
-    'ast': ast,
-    'ida': ida
-}
+
+
 
 if __name__ == '__main__':
     main()
