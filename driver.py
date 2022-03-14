@@ -1,5 +1,6 @@
 from heapq import heappush, heappop, heapify
 from state import State
+import timeit
 
 initial_state = [7, 4, 2, 3, 1, 5, 0, 8, 6]
 goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]
@@ -250,16 +251,25 @@ def printResult():
 def main(): 
 
     print("A* Algorithm")
-
+    
+    startTime = timeit.default_timer()
+    
     ast(initial_state)
-
+    
+    endTime = timeit.default_timer()
+    
     printResult()
+    print("\nThe time for the operation:" + str((endTime-startTime)))
 
     print("\nIDA* Algorithm")
+    startTime = timeit.default_timer()
 
     ida(initial_state)
     
+    endTime = timeit.default_timer()
+
     printResult()
+    print("\nThe time for the operation:" + str((endTime-startTime)))
 
 
 
