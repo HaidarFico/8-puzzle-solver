@@ -34,7 +34,7 @@ def ast(start_state):
     while heap:
 
         node = heappop(heap)
-
+        # print(node[2].state) Kalau ingin melihat steps nya 
         explored.add(node[2].map)
 
         if node[2].state == goal_state:
@@ -99,13 +99,10 @@ def dls_mod(start_state, threshold):
     global max_frontier_size, goal_node, max_search_depth, costs
 
     explored, stack = set(), list([State(start_state, None, None, 0, 0, threshold)])
-
     while stack:
-
         node = stack.pop()
-
+        # print(node.state) total expanded
         explored.add(node.map)
-
         if node.state == goal_state:
             goal_node = node
             return stack
@@ -218,7 +215,7 @@ def backtrace():
     moves.clear()
 
     current_node = goal_node
-
+    
     while initial_state != current_node.state:
 
         if current_node.move == 1:
@@ -231,7 +228,9 @@ def backtrace():
             movement = 'Right'
 
         moves.insert(0, movement)
+        print(current_node.state)
         current_node = current_node.parent
+        
 
     return moves
 
@@ -260,7 +259,7 @@ def main():
     
     printResult()
     print("\nThe time for the operation:" + str((endTime-startTime)))
-
+    
     print("\nIDA* Algorithm")
     startTime = timeit.default_timer()
 
