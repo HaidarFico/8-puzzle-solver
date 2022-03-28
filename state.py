@@ -3,11 +3,11 @@ class State:
 
     def __init__(self, state, parent, move, depth, cost, key):
 
-        self.state = state
+        self.state = state # List yang berisi urutan nomor sekarang.
 
-        self.parent = parent
+        self.parent = parent # State parent.
 
-        self.move = move
+        self.move = move # Move sebelumnya
 
         self.depth = depth
 

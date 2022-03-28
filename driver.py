@@ -11,7 +11,7 @@ nodes_expanded = 0
 max_search_depth = 0
 max_frontier_size = 0
 
-moves = list()
+moves = list() # Untuk backtrace dan printresult
 costs = set()
 
 def ast(start_state):
@@ -41,7 +41,7 @@ def ast(start_state):
             goal_node = node[2]
             return heap
 
-        neighbors = expand(node[2])
+        neighbors = expand(node[2]) # List of states
 
         for neighbor in neighbors:
 
@@ -142,7 +142,11 @@ def expand(node):
     neighbors.append(State(move(node.state, 3), node, 3, node.depth + 1, node.cost + 1, 0))
     neighbors.append(State(move(node.state, 4), node, 4, node.depth + 1, node.cost + 1, 0))
 
-    nodes = [neighbor for neighbor in neighbors if neighbor.state]
+    nodes = list() #Nodes merupakan list of S   tates
+
+    for neighbor in neighbors: 
+        if neighbor.state:
+            nodes.append(neighbor)
 
     return nodes
 
