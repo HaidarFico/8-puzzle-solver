@@ -214,7 +214,7 @@ def h(state):
     return count
 
 
-def backtrace():
+def backtrace(stateList):
 
     moves.clear()
 
@@ -232,7 +232,9 @@ def backtrace():
             movement = 'Right'
 
         moves.insert(0, movement)
-        print(current_node.state)
+
+        stateList.append(current_node.state)
+        
         current_node = current_node.parent
         
 
@@ -242,7 +244,13 @@ def backtrace():
 def printResult():
 
     global moves, nodes_expanded
-    moves = backtrace()
+
+    stateList = list()
+    moves = backtrace(stateList)
+    stateList.reverse()
+    
+    for states in stateList:
+        print(states)
 
     print("Path to goal: " + str(moves))
     print("\nCost of path: " + str(len(moves)))
