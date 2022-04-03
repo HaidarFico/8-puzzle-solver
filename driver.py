@@ -236,7 +236,8 @@ def backtrace(stateList):
         stateList.append(current_node.state)
         
         current_node = current_node.parent
-        
+
+    stateList.append(current_node.state) 
 
     return moves
 
