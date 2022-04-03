@@ -240,6 +240,9 @@ def backtrace(stateList):
 
     return moves
 
+def printState(state):
+    print("| {} {} {} |\n| {} {} {} | \n| {} {} {} |\n"
+        .format(state[0], state[1], state[2], state[3], state[4], state[5], state[6], state[7], state[8]))
 
 def printResult():
 
@@ -248,9 +251,9 @@ def printResult():
     stateList = list()
     moves = backtrace(stateList)
     stateList.reverse()
-    
+
     for states in stateList:
-        print(states)
+        printState(states)
 
     print("Path to goal: " + str(moves))
     print("\nCost of path: " + str(len(moves)))
