@@ -239,6 +239,8 @@ def backtrace(stateList):
 
     stateList.append(current_node.state) 
 
+    stateList.reverse()
+
     return moves
 
 def printState(state):
@@ -251,7 +253,6 @@ def printResult():
 
     stateList = list()
     moves = backtrace(stateList)
-    stateList.reverse()
 
     for states in stateList:
         printState(states)
