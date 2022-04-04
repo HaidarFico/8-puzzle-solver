@@ -8,15 +8,13 @@ goal_node = State
 board_len = 9
 board_side = 3
 nodes_expanded = 0
-max_search_depth = 0
-max_frontier_size = 0
 
 moves = list() # Untuk backtrace dan printresult
-costs = set()
+costs = set() # Untuk ida*
 
 def ast(start_state):
 
-    global max_frontier_size, goal_node, max_search_depth
+    global goal_node
 
     explored = set()
     heap = list()
@@ -41,7 +39,7 @@ def ast(start_state):
             goal_node = node[2]
             return heap
 
-        neighbors = expand(node[2]) # List of states
+        neighbors = expand(node[2]) # List of states, akan kemungkinan sampai 4 states
 
         for neighbor in neighbors:
 
@@ -57,10 +55,7 @@ def ast(start_state):
 
                 heapEntry[neighbor.map] = entry
 
-                if neighbor.depth > max_search_depth:
-                    max_search_depth += 1
-
-            elif neighbor.map in heapEntry and neighbor.key < heapEntry[neighbor.map][2].key:
+            elif neighbor.map in heapEntry and neighbor.key < heapEntry[neighbor.map][2].key: #Jika key neighbor < key yang ada
 
                 hindex = heap.index((heapEntry[neighbor.map][2].key,
                                      heapEntry[neighbor.map][2].move,
@@ -71,9 +66,6 @@ def ast(start_state):
                 heapEntry[neighbor.map] = entry
 
                 heapify(heap)
-
-        if len(heap) > max_frontier_size:
-            max_frontier_size = len(heap)
 
 
 def ida(start_state):
@@ -96,7 +88,7 @@ def ida(start_state):
 
 def dls_mod(start_state, threshold):
 
-    global max_frontier_size, goal_node, max_search_depth, costs
+    global goal_node, costs
 
     explored, stack = set(), list([State(start_state, None, None, 0, 0, threshold)])
     while stack:
@@ -121,12 +113,6 @@ def dls_mod(start_state, threshold):
                     stack.append(neighbor)
                     explored.add(neighbor.map)
 
-                    if neighbor.depth > max_search_depth:
-                        max_search_depth += 1
-
-            if len(stack) > max_frontier_size:
-                max_frontier_size = len(stack)
-
     return min(costs)
 
 
@@ -142,7 +128,7 @@ def expand(node):
     neighbors.append(State(move(node.state, 3), node, 3, node.depth + 1, node.cost + 1, 0))
     neighbors.append(State(move(node.state, 4), node, 4, node.depth + 1, node.cost + 1, 0))
 
-    nodes = list() #Nodes merupakan list of S   tates
+    nodes = list() #Nodes merupakan list of States
 
     for neighbor in neighbors: 
         if neighbor.state:
